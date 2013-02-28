@@ -1,8 +1,6 @@
 $(function () {
-    window.map = new TimeMap("map_canvas");
-    window.controller = new DataController(window.RAW_DATA, window.map, 60*60*1000);
+    window.controller = new DataController(window.RAW_DATA, "map_canvas", 60*60*1000);
     window.speed = 300
-    
     window.steps_to_last = 24
     $('#play').on('click', play);
     $('#stepplus').on('click', stepForward);
@@ -12,8 +10,6 @@ $(function () {
     $('#setstep').on('click', setStep);
     $('#setspeed').on('click', setSpeed)
     $('#setduration').on('click', setDuration)
-
-
 });
 
 //wrap all this window shit in player and boom.
