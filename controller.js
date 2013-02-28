@@ -30,30 +30,27 @@ DataController.prototype.calculateSteps = function() {
     var steps = []
     var ABS_MIN_TIME = this.points[0].epoch.getTime()
     var ABS_MAX_TIME = this.points[this.points.length-1].epoch.getTime()
-    this.ABS_MAX_TIME = ABS_MAX_TIME
-    this.ABS_MIN_TIME = ABS_MIN_TIME
     var SIM_LENGTH = ABS_MAX_TIME - ABS_MIN_TIME;
     var SIM_STEPS = SIM_LENGTH / this.millisecondsPerStep;
+    this.ABS_MAX_TIME = ABS_MAX_TIME
+    this.ABS_MIN_TIME = ABS_MIN_TIME
+    this.SIM_STEPS = SIM_STEPS
+    this.SIM_LENGTH = SIM_LENGTH
     for(var current = ABS_MIN_TIME; current<ABS_MAX_TIME; current+=this.millisecondsPerStep){
         step = {}
         step.points = []
         step.min_time = current;
         step.max_time = current + this.millisecondsPerStep;
-        for(i in this.points){
-            if(this.points[i].epoch > step.min_time){
-                if(this.points[i].epoch.getTime() < step.max_time){
-                    step.points.push(this.points[i]);
-                }
-            }
-        }
-        step.points.sort(function (a,b){
-            if (a.epoch > b.epoch) return 1;
-            if (a.epoch < b.epoch) return -1;
-            return 0;
-        });
         steps.push(step);
     }
-    console.log(ABS_MIN_TIME, ABS_MAX_TIME, SIM_LENGTH, SIM_STEPS)
+
+    for(i in this.points){
+        pt = this.points[i]
+        index = Math.floor((pt.epoch.getTime()-this.ABS_MIN_TIME)/this.millisecondsPerStep)
+        
+        steps[index].points.push(pt)
+    }
+    
     this.steps = steps;
     return steps;
 
@@ -66,10 +63,12 @@ DataController.prototype.step = function() {
         }
         this.currentStep = 0;
     }
-    console.log(this.currentStep);
+    
     var new_points = this.steps[this.currentStep].points;
-    if(this.currentStep > 3){
-        var old_points = this.steps[this.currentStep-3].points;
+
+
+    if(this.currentStep >= window.steps_to_last){
+        var old_points = this.steps[this.currentStep-window.steps_to_last].points;
 
         for(i in old_points){
             old_points[i].hide();
@@ -89,30 +88,6 @@ DataController.prototype.step = function() {
     $('#mintime').text(out_string);
     this.currentStep += 1;
 
-};
-
-
-
-// DataController.prototype.play_steps = function() {
-//     // for(var i = 0; i< this.steps.length; i++){
-//     //     this.step();
-//     //     console.log(i)
-//     //     setTimeout(500);
-//     // }
-//     // this.step();
-//     // self = this;
-//     // setInterval(self.step, 500);
-//     // setTimeout(function () {return;}, 500)
-//     // this.play_steps();
-// };
-
-DataController.prototype.simulate_realtime = function() {
-    var st
-    var minTime = this.points[0].epoch;
-    var maxTime = this.points[this.points.length-1].epoch;
-
-    console.log(minTime, maxTime);
-    console.log(maxTime-minTime);
 };
 
 function Point (data, controller) {
@@ -154,6 +129,7 @@ Point.prototype.hide = function() {
 };
 
 Point.prototype.show = function() {
+    self = this;
     this.marker.setOptions({visible:true})
+//    setTimeout(self.hide, window.display_duration)
 };
-

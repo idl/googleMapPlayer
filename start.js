@@ -2,11 +2,16 @@ $(function () {
     window.map = new TimeMap("map_canvas");
     window.controller = new DataController(window.RAW_DATA, window.map, 60*60*1000);
     window.speed = 300
+    
+    window.steps_to_last = 24
     $('#play').on('click', play);
+    $('#stepplus').on('click', stepForward);
+    $('#stepminus').on('click', stepBackward);
     $('#reset').on('click', reset);
     $('#pause').on('click', pause);
     $('#setstep').on('click', setStep);
     $('#setspeed').on('click', setSpeed)
+    $('#setduration').on('click', setDuration)
 
 
 });
@@ -16,6 +21,15 @@ function play(){
 
     window.interval = setInterval(function () {window.controller.step()}, window.speed);
 };
+
+function stepForward(){
+    window.controller.step();
+};
+
+function stepBackward(){
+    window.controller.currentStep -= 2;
+    window.controller.step();
+}
 
 function pause(){
     window.clearInterval(window.interval);
@@ -39,4 +53,8 @@ function setStep(){
 function setSpeed(){
     pause();
     window.speed = $('#speed').val()
+}
+
+function setDuration(){
+    window.steps_to_last = $('#duration').val()
 }

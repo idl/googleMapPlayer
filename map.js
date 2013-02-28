@@ -10,22 +10,22 @@ function TimeMap(target_element_id) {
 }
 
 
-SMTASMap.prototype.attachClusterControl = function() {
-    var clusterControlDiv = document.createElement('div');
-    var homeControl = new ClusterControl(clusterControlDiv, this);
+// SMTASMap.prototype.attachClusterControl = function() {
+//     var clusterControlDiv = document.createElement('div');
+//     var homeControl = new ClusterControl(clusterControlDiv, this);
 
-    homeControlDiv.index = 1;
-    this.map.controls[google.maps.ControlPosition.RIGHT_TOP].push(homeControlDiv);
-};
+//     homeControlDiv.index = 1;
+//     this.map.controls[google.maps.ControlPosition.RIGHT_TOP].push(homeControlDiv);
+// };
 
-SMTASMap.prototype.clusterMap = function () {
-    this.markerClusterer.addMarkers(this.markers);
-};
+// SMTASMap.prototype.clusterMap = function () {
+//     this.markerClusterer.addMarkers(this.markers);
+// };
 
-SMTASMap.prototype.unclusterMap = function() {
-    this.markerClusterer.clearMarkers();
+// SMTASMap.prototype.unclusterMap = function() {
+//     this.markerClusterer.clearMarkers();
 
-    for (var i = 0; i < this.markers.length; i++) { 
-        this.markers[i].setOptions({map: this.map, visible:true});
-    }
-};
+//     for (var i = 0; i < this.markers.length; i++) { 
+//         this.markers[i].setOptions({map: this.map, visible:true});
+//     }
+// };
