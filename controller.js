@@ -92,10 +92,9 @@ DataController.prototype.reset = function(first_argument) {
 DataController.prototype.updateDescription = function(first_argument) {
     var tmp_date = new Date(parseFloat(this.steps[this.currentStep].min_time))
     var date_string = (tmp_date.getMonth() + 1) + "/" + tmp_date.getDate() + "/" + tmp_date.getFullYear() + " " + tmp_date.getHours() + ":" + tmp_date.getMinutes() + ":" + tmp_date.getSeconds()
-    var time_at = parseInt(this.currentStep*((1/this.millisecondsPerStep)*1000)*1000)
-    var time_end = parseInt(this.steps.length*((1/this.millisecondsPerStep)*1000)*1000)
-    var out_string = "Time: "+date_string+ " | Step: " + this.currentStep + " of " + this.steps.length + " | " + time_at + " seconds of " +time_end + " seconds. "+(time_end-time_at)+" seconds remaining";
-    $('#mintime').text(out_string);
+    
+    var out_string = "Time: "+date_string+ "<p>Step: " + this.currentStep + " of " + this.steps.length + "</p><p>"+100*(this.currentStep/parseFloat(this.steps.length)).toFixed(2)+"% complete</p>";
+    $('#mintime').html(out_string);
 };
 
 DataController.prototype.hidePoints = function(points) {
